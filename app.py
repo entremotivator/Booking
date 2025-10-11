@@ -42,7 +42,7 @@ if wp_user and wp_app_password:
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Options**")
-api_base = st.sidebar.text_input("Amelia API Base Path", "wp-json/amelia/v1")
+api_base = st.sidebar.text_input("Amelia API Base Path", "wp-admin/admin-ajax.php?action=wpamelia_api&call=/api/v1")
 show_raw_json = st.sidebar.checkbox("Show Raw JSON Responses", value=False)
 
 # API URLs
@@ -56,6 +56,7 @@ st.caption("Manage appointments, bookings, services, customers, and employees us
 # -------------------------------------
 def amelia_get(endpoint: str, params: Dict[str, Any] = None, silent_on_error: bool = False) -> Optional[Any]:
     """Fetch JSON from Amelia REST API."""
+    # Construct URL: base includes the call parameter, so we append the endpoint
     url = f"{amelia_url}/{endpoint}"
     try:
         res = requests.get(url, headers=headers, auth=auth, params=params, timeout=30)
@@ -79,6 +80,7 @@ def amelia_get(endpoint: str, params: Dict[str, Any] = None, silent_on_error: bo
 
 def amelia_post(endpoint: str, data: Dict[str, Any]) -> Optional[Any]:
     """Create a new resource via POST request."""
+    # Construct URL: base includes the call parameter, so we append the endpoint
     url = f"{amelia_url}/{endpoint}"
     try:
         res = requests.post(url, headers=headers, auth=auth, json=data, timeout=30)

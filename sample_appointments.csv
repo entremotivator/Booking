@@ -1,0 +1,5 @@
+booking_start,service_id,provider_id,customer_id,location_id,persons,status,internal_notes,duration
+2024-12-15 10:00,1,1,10,1,1,approved,Regular appointment,1800
+2024-12-15 14:00,1,1,11,1,2,approved,VIP customer,1800
+2024-12-16 09:00,2,1,12,1,1,pending,Follow-up needed,3600
+2024-12-16 15:00,1,2,10,1,1,approved,Recurring customer,1800

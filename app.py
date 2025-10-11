@@ -7,12 +7,12 @@ st.title("🎯 Amelia API Streamlit Demo")
 
 # --- Sidebar ---
 st.sidebar.header("API Configuration")
-API_BASE_URL = "https://videmiservices.com/wp-admin/admin-ajax.php"
+API_BASE_URL = "https://videmiservices.com/wp-admin/admin-ajax.php?action=wpamelia_api&call=/api/v1"
 st.sidebar.write("**Base URL:**")
 st.sidebar.code(API_BASE_URL)
 
-# Input API Key (required)
-api_key = st.sidebar.text_input("API Key", type="password")
+# Input API Key (required with default value)
+api_key = st.sidebar.text_input("API Key", value="n3B2dUCRbkE372m6jRXPwGHI9JGVLJ1f2xHVySWgK4VY", type="password")
 st.sidebar.markdown(
     "You must generate an API Key in Amelia → Settings → API to access endpoints."
 )

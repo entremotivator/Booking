@@ -29,16 +29,17 @@ st.set_page_config(
 # -------------------------------------
 # Sidebar: WordPress Connection
 # -------------------------------------
-st.sidebar.title("🔐 WordPress Connection")
+st.sidebar.title("🔐 Amelia API Connection")
 
-wp_base = st.sidebar.text_input("WordPress Site URL", "https://yoursite.com").rstrip("/")
-wp_user = st.sidebar.text_input("Username or Email")
-wp_app_password = st.sidebar.text_input("App Password", type="password", help="Use WordPress App Passwords under Users → Profile → App Password")
+wp_base = st.sidebar.text_input("WordPress Site URL", "https://videmiservices.com").rstrip("/")
+amelia_api_key = st.sidebar.text_input("Amelia API Key", type="password", help="Enter your Amelia API key from WordPress admin")
 
-auth = None
-headers = {"Accept": "application/json", "Content-Type": "application/json"}
-if wp_user and wp_app_password:
-    auth = (wp_user, wp_app_password)
+headers = {
+    "Accept": "application/json", 
+    "Content-Type": "application/json"
+}
+if amelia_api_key:
+    headers["Amelia"] = amelia_api_key
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Options**")
@@ -49,7 +50,7 @@ show_raw_json = st.sidebar.checkbox("Show Raw JSON Responses", value=False)
 amelia_url = f"{wp_base}/{api_base}"
 
 st.title("📅 WordPress Amelia Booking API Explorer")
-st.caption("Manage appointments, bookings, services, customers, and employees using the Amelia REST API with App Password authentication.")
+st.caption("Manage appointments, bookings, services, customers, and employees using the Amelia REST API with API Key authentication.")
 
 # -------------------------------------
 # Helper functions
@@ -59,7 +60,7 @@ def amelia_get(endpoint: str, params: Dict[str, Any] = None, silent_on_error: bo
     # Construct URL: base includes the call parameter, so we append the endpoint
     url = f"{amelia_url}/{endpoint}"
     try:
-        res = requests.get(url, headers=headers, auth=auth, params=params, timeout=30)
+        res = requests.get(url, headers=headers, params=params, timeout=30)
         res.raise_for_status()
         return res.json()
     except requests.HTTPError as e:
@@ -83,7 +84,7 @@ def amelia_post(endpoint: str, data: Dict[str, Any]) -> Optional[Any]:
     # Construct URL: base includes the call parameter, so we append the endpoint
     url = f"{amelia_url}/{endpoint}"
     try:
-        res = requests.post(url, headers=headers, auth=auth, json=data, timeout=30)
+        res = requests.post(url, headers=headers, json=data, timeout=30)
         res.raise_for_status()
         return res.json()
     except requests.HTTPError as e:
@@ -1112,4 +1113,4 @@ with tab5:
 # Footer
 # -------------------------------------
 st.markdown("---")
-st.caption("🚀 Developed for WordPress Amelia Booking API exploration — supports appointments, bookings, services, customers, and employees. Handles App Password authentication safely.")
+st.caption("🚀 Developed for WordPress Amelia Booking API exploration — supports appointments, bookings, services, customers, and employees. Handles API Key authentication safely.")

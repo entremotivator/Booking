@@ -18,7 +18,9 @@ st.sidebar.markdown(
 )
 
 # --- Helper Function for POST requests ---
-def amelia_api_call(endpoint: str, payload: dict = {}):
+def amelia_api_call(endpoint: str, payload: dict = None):
+    if payload is None:
+        payload = {}
     url = f"{API_BASE_URL}/{endpoint}"
     headers = {
         "Authorization": f"Bearer {api_key}" if api_key else "",
@@ -39,42 +41,20 @@ def amelia_api_call(endpoint: str, payload: dict = {}):
 # --- Main Content ---
 st.subheader("Test API Connection / List Data")
 
-# Buttons for different API calls
-if st.button("Test Connection (Settings)"):
-    if not api_key:
-        st.warning("Please enter an API key in the sidebar!")
-    else:
-        result = amelia_api_call("settings")
-        if result:
-            st.success("✅ Connection successful!")
-            st.json(result)
+def handle_api_button(label, endpoint):
+    if st.button(label):
+        if not api_key:
+            st.warning("Please enter an API key in the sidebar!")
+        else:
+            result = amelia_api_call(endpoint)
+            if result:
+                st.success(f"✅ {label} fetched successfully!")
+                st.json(result)
 
-if st.button("List Services"):
-    if not api_key:
-        st.warning("Please enter an API key in the sidebar!")
-    else:
-        result = amelia_api_call("services")
-        if result:
-            st.success("✅ Services fetched successfully!")
-            st.json(result)
-
-if st.button("List Employees"):
-    if not api_key:
-        st.warning("Please enter an API key in the sidebar!")
-    else:
-        result = amelia_api_call("employees")
-        if result:
-            st.success("✅ Employees fetched successfully!")
-            st.json(result)
-
-if st.button("List Appointments"):
-    if not api_key:
-        st.warning("Please enter an API key in the sidebar!")
-    else:
-        result = amelia_api_call("appointments")
-        if result:
-            st.success("✅ Appointments fetched successfully!")
-            st.json(result)
+handle_api_button("Test Connection (Settings)", "settings")
+handle_api_button("List Services", "services")
+handle_api_button("List Employees", "employees")
+handle_api_button("List Appointments", "appointments")
 
 # --- Footer ---
 st.markdown("---")
